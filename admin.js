@@ -23,7 +23,7 @@ $("adminLogin").addEventListener("submit",async e=>{
  finally{b.disabled=false;}
 });
 $("adminLogout").addEventListener("click",async()=>{const b=$("adminLogout");b.disabled=true;try{const {error}=await db.auth.signOut();if(error)throw error;await refresh();}catch(err){console.error(err);say("adminStatus","লগআউট করা যায়নি। আবার চেষ্টা করুন।");}finally{b.disabled=false;}});
-async function digest(file){if(!crypto?.subtle)throw new Error("SHA-256 সমর্থিত নিরাপদ ব্রাউজার প্রয়োজন।");const buf=await crypto.subtle.digest("SHA-256",await file.arrayBuffer());return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+async function digest(file){if(!window.crypto?.subtle)throw new Error("SHA-256 সমর্থিত নিরাপদ ব্রাউজার প্রয়োজন।");const buf=await window.crypto.subtle.digest("SHA-256",await file.arrayBuffer());return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 $("adminUpload").addEventListener("submit",async e=>{
  e.preventDefault();const file=$("mediaFile").files[0];if(!file)return;
  if(file.size===0||file.size>50*1024*1024){say("uploadMessage","ফাইল খালি অথবা ৫০ MB-এর বেশি।");return;}
@@ -51,5 +51,5 @@ async function loadRecords(){
  box.innerHTML=data.map(x=>'<article class="admin-record"><div><b>'+escapeHtml(x.title)+'</b><p class="small">'+escapeHtml(x.creator||"")+' · '+(x.media_type==="video"?"ভিডিও":"ছবি")+' · '+escapeHtml(x.created_at?new Date(x.created_at).toLocaleString("bn-BD"):"")+'</p><code>'+escapeHtml(x.sha256||"")+'</code></div></article>').join("");
  }catch(err){console.error("Record list error",err);box.textContent="তালিকা লোড করা যায়নি। Supabase RLS policy ও media_records টেবিল পরীক্ষা প্রয়োজন।";}
 }
-db.auth.onAuthStateChange(()=>{void refresh();});void refresh();
+db.auth.onAuthStateChange(()=>{setTimeout(()=>{void refresh();},0);});void refresh();
 })();
