@@ -13,7 +13,7 @@
 <header class="top">
   <div class="wrap nav">
     <a class="brand" href="#" aria-label="Original Vault হোম"><span class="brand-mark">OV</span><span><b>Original Vault</b><small>ORIGINAL CONTENT ARCHIVE</small></span></a>
-    <nav aria-label="প্রধান নেভিগেশন"><a href="#news">ছবি</a><a href="#videos">ভিডিও</a><a href="#archive">কপিরাইট আর্কাইভ</a><a href="#upload">অ্যাডমিন</a><a href="#about">আমাদের সম্পর্কে</a></nav>
+    <nav aria-label="প্রধান নেভিগেশন"><a href="#news">ছবি</a><a href="#videos">ভিডিও</a><a href="#archive">কপিরাইট আর্কাইভ</a><a href="admin.html">অ্যাডমিন লগইন</a><a href="#about">আমাদের সম্পর্কে</a></nav>
   </div>
 </header>
 <section class="hero">
@@ -41,30 +41,9 @@
     </div>
     <div class="archive-note"><b>গুরুত্বপূর্ণ</b><p>এই আর্কাইভ নিজে থেকে সরকারি কপিরাইট নিবন্ধন বা মালিকানার চূড়ান্ত প্রমাণ নয়। মূল ফাইল, কাজের খসড়া, প্রকাশের রেকর্ড ও অন্যান্য প্রমাণও আলাদাভাবে নিরাপদে রাখুন।</p></div>
   </section>
-  <section id="upload" class="section">
-    <div class="section-head"><div><span class="eyebrow">ADMIN AREA</span><h2>অ্যাডমিন আপলোড প্যানেল</h2></div><span class="muted">শুধু অনুমোদিত অ্যাডমিন লগইন করে আপলোড করতে পারবেন</span></div>
-    <div class="panel">
-      <p id="configNotice" class="notice" role="status">Supabase সংযোগ পরীক্ষা হচ্ছে...</p>
-      <div id="authBox" hidden>
-        <form id="loginForm" class="form">
-          <label>অ্যাডমিন ইমেইল<input id="email" type="email" autocomplete="username" required></label>
-          <label>পাসওয়ার্ড<input id="password" type="password" autocomplete="current-password" required></label>
-          <div class="actions"><button class="button" type="submit">লগইন</button><button class="button secondary" id="logoutBtn" type="button" hidden>লগআউট</button></div>
-          <p id="authMessage" class="small" role="status"></p>
-        </form>
-        <form id="uploadForm" class="form" hidden>
-          <label>কনটেন্টের শিরোনাম<input id="title" maxlength="120" required></label>
-          <label>বিবরণ<textarea id="description" rows="3" maxlength="1000"></textarea></label>
-          <label>স্রষ্টা / স্বত্বাধিকারীর নাম<input id="creator" maxlength="120" required></label>
-          <label>প্রথম প্রকাশের তারিখ<input id="publishedAt" type="date"></label>
-          <label>মূল পোস্টের লিংক (ঐচ্ছিক)<input id="sourceUrl" type="url" inputmode="url" placeholder="https://..."></label>
-          <label>ছবি অথবা ভিডিও নির্বাচন করুন<input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" required></label>
-          <p class="small">প্রতি ফাইল সর্বোচ্চ ৫০ MB। SHA-256 হ্যাশ স্বয়ংক্রিয়ভাবে তৈরি হবে।</p>
-          <button class="button" type="submit">আপলোড করুন</button>
-          <p id="uploadMessage" class="small" role="status" aria-live="polite"></p>
-        </form>
-      </div>
-    </div>
+  <section class="section admin-callout">
+    <div><span class="eyebrow">ADMIN AREA</span><h2>কনটেন্ট পরিচালনা</h2><p>অনুমোদিত অ্যাডমিন অ্যাকাউন্ট দিয়ে আলাদা ড্যাশবোর্ডে প্রবেশ করুন।</p></div>
+    <a class="button" href="admin.html">অ্যাডমিন ড্যাশবোর্ডে যান</a>
   </section>
   <section id="about" class="section about">
     <span class="eyebrow">ABOUT</span><h2>আমাদের সম্পর্কে</h2>
