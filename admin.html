@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Original Vault admin dashboard">
+  <meta name="theme-color" content="#155eef">
+  <title>অ্যাডমিন ড্যাশবোর্ড | Original Vault</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="top"><div class="wrap nav">
+  <a class="brand" href="index.html"><span class="brand-mark">OV</span><span><b>Original Vault</b><small>ADMIN DASHBOARD</small></span></a>
+  <nav><a href="index.html">ওয়েবসাইটে ফিরে যান</a></nav>
+</div></header>
+<main class="wrap admin-page">
+  <div class="section-head"><div><span class="eyebrow">SECURE ADMIN AREA</span><h1 class="admin-title">অ্যাডমিন ড্যাশবোর্ড</h1><p class="muted">লগইন করে নিজের ছবি ও ভিডিও আর্কাইভে সংরক্ষণ করুন।</p></div></div>
+  <section class="panel admin-panel">
+    <p id="adminStatus" class="notice" role="status">সংযোগ পরীক্ষা হচ্ছে...</p>
+    <form id="adminLogin" class="form">
+      <label>অ্যাডমিন ইমেইল<input id="adminEmail" type="email" autocomplete="username" required></label>
+      <label>পাসওয়ার্ড<input id="adminPassword" type="password" autocomplete="current-password" required></label>
+      <button class="button" type="submit">লগইন করুন</button>
+      <p id="loginMessage" class="small" role="status"></p>
+    </form>
+    <div id="adminWorkspace" hidden>
+      <div class="admin-toolbar"><div><b>লগইন সফল</b><p id="signedInAs" class="small"></p></div><button id="adminLogout" class="button secondary" type="button">লগআউট</button></div>
+      <hr>
+      <h2>নতুন কনটেন্ট আপলোড</h2>
+      <form id="adminUpload" class="form">
+        <label>কনটেন্টের শিরোনাম<input id="mediaTitle" maxlength="120" required></label>
+        <label>বিবরণ<textarea id="mediaDescription" rows="3" maxlength="1000"></textarea></label>
+        <label>স্রষ্টা / স্বত্বাধিকারীর নাম<input id="mediaCreator" maxlength="120" required></label>
+        <label>প্রথম প্রকাশের তারিখ<input id="mediaPublished" type="date"></label>
+        <label>মূল পোস্টের লিংক (ঐচ্ছিক)<input id="mediaSource" type="url" placeholder="https://..."></label>
+        <label>ছবি অথবা ভিডিও<input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" required></label>
+        <p class="small">সর্বোচ্চ ৫০ MB। অনুমোদিত ফাইল: JPG, PNG, WEBP, GIF, MP4, WEBM, MOV।</p>
+        <button class="button" type="submit">আপলোড করুন</button>
+        <p id="uploadMessage" class="small" role="status" aria-live="polite"></p>
+      </form>
+      <hr>
+      <h2>সংরক্ষিত কনটেন্ট</h2>
+      <div id="adminRecords" class="admin-records">তথ্য লোড হচ্ছে...</div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap foot"><span>© <span id="year"></span> Original Vault</span><a href="index.html">মূল ওয়েবসাইট</a></div></footer>
+<script src="config.js"></script><script src="admin.js"></script>
+</body></html>
