@@ -3,47 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="OriginalVault — নিজস্ব ছবি, ভিডিও ও প্রকাশের তথ্য সংরক্ষণের ডিজিটাল আর্কাইভ।">
-  <title>OriginalVault | নিউজ ও কপিরাইট আর্কাইভ</title>
+  <meta name="description" content="Original Vault — নিজস্ব ছবি, ভিডিও ও প্রকাশের তথ্য সংরক্ষণের ডিজিটাল আর্কাইভ।">
+  <meta name="theme-color" content="#155eef">
+  <title>Original Vault | অরিজিনাল কনটেন্ট আর্কাইভ</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <header class="top">
   <div class="wrap nav">
-    <a class="brand" href="#"><span class="brand-mark">মি</span><span><b>OriginalVault</b><small>ORIGINAL CONTENT ARCHIVE</small></span></a>
-    <nav><a href="#news">ছবি</a><a href="#videos">ভিডিও</a><a href="#archive">কপিরাইট আর্কাইভ</a><a href="#upload">আপলোড</a><a href="#about">আমাদের সম্পর্কে</a></nav>
+    <a class="brand" href="#" aria-label="Original Vault হোম"><span class="brand-mark">OV</span><span><b>Original Vault</b><small>ORIGINAL CONTENT ARCHIVE</small></span></a>
+    <nav aria-label="প্রধান নেভিগেশন"><a href="#news">ছবি</a><a href="#videos">ভিডিও</a><a href="#archive">কপিরাইট আর্কাইভ</a><a href="#upload">অ্যাডমিন</a><a href="#about">আমাদের সম্পর্কে</a></nav>
   </div>
 </header>
 <section class="hero">
   <div class="wrap hero-inner">
     <div><span class="eyebrow">বিশ্বস্ত তথ্য • নিজস্ব কনটেন্ট</span>
-      <h1>আপনার অরিজিনাল কনটেন্ট<br><em>একটি নিরাপদ আর্কাইভে</em></h1>
-      <p>নিজস্ব ছবি ও ভিডিও প্রকাশ করুন, সঙ্গে সংরক্ষণ করুন স্রষ্টার নাম, প্রথম প্রকাশের তারিখ এবং মূল পোস্টের লিংক।</p>
+      <h1>আপনার অরিজিনাল কনটেন্ট<br><em>একটি গোছানো আর্কাইভে</em></h1>
+      <p>নিজস্ব ছবি ও ভিডিও সংরক্ষণ করুন। সঙ্গে রাখুন স্রষ্টার নাম, প্রথম প্রকাশের তারিখ, মূল পোস্টের লিংক এবং ফাইলের SHA-256 হ্যাশ।</p>
       <a class="button" href="#news">আর্কাইভ দেখুন</a></div>
-    <div class="hero-card"><div class="play">▶</div><b>আপনার মিডিয়া আর্কাইভ</b><span>ভিডিও · ফটো · অরিজিনাল কনটেন্ট</span></div>
+    <div class="hero-card" aria-label="আপনার মিডিয়া আর্কাইভ"><div class="play">▶</div><b>আপনার মিডিয়া আর্কাইভ</b><span>ভিডিও · ফটো · অরিজিনাল কনটেন্ট</span></div>
   </div>
 </section>
 <main class="wrap">
   <section id="news" class="section">
     <div class="section-head"><div><span class="eyebrow">PHOTO ARCHIVE</span><h2>ছবি ও ফটো</h2></div><span class="muted">আপলোড করা ছবিগুলো এখানে দেখা যাবে</span></div>
-    <div id="photoGrid" class="grid"><p class="muted">আর্কাইভ লোড হচ্ছে...</p></div>
+    <div id="photoGrid" class="grid" aria-live="polite"><p class="muted">আর্কাইভ লোড হচ্ছে...</p></div>
   </section>
   <section id="videos" class="section">
-    <div class="section-head"><div><span class="eyebrow">WATCH</span><h2>ভিডিও</h2></div><span class="muted">ভিডিওর বিবরণ ও প্রকাশের তারিখসহ</span></div>
-    <div id="videoGrid" class="grid"><p class="muted">আর্কাইভ লোড হচ্ছে...</p></div>
+    <div class="section-head"><div><span class="eyebrow">VIDEO ARCHIVE</span><h2>ভিডিও</h2></div><span class="muted">ভিডিওর বিবরণ ও প্রকাশের তারিখসহ</span></div>
+    <div id="videoGrid" class="grid" aria-live="polite"><p class="muted">আর্কাইভ লোড হচ্ছে...</p></div>
   </section>
   <section id="archive" class="section archive">
     <div><span class="eyebrow">OWNERSHIP RECORDS</span><h2>কপিরাইট আর্কাইভ</h2>
       <p>নিজস্ব ভিডিও ও ছবির পরিচিতি, স্রষ্টা, প্রথম প্রকাশের তারিখ এবং মূল ফাইলের প্রযুক্তিগত রেফারেন্স গুছিয়ে রাখুন।</p>
       <ul><li>কনটেন্টের শিরোনাম ও বিবরণ</li><li>স্রষ্টা/স্বত্বাধিকারীর নাম</li><li>প্রথম প্রকাশের তারিখ ও মূল পোস্টের লিংক</li><li>ফাইলের SHA-256 হ্যাশ (প্রযুক্তিগত রেফারেন্স)</li></ul>
     </div>
-    <div class="archive-note"><b>গুরুত্বপূর্ণ</b><p>ওয়েবসাইটে প্রকাশ বা আর্কাইভে রাখা নিজে থেকে সরকারি কপিরাইট নিবন্ধন নয় বা মালিকানার চূড়ান্ত প্রমাণ নয়। মূল ফাইল, কাজের খসড়া, প্রকাশের রেকর্ড ও অন্যান্য প্রমাণও আলাদাভাবে নিরাপদে রাখুন।</p></div>
+    <div class="archive-note"><b>গুরুত্বপূর্ণ</b><p>এই আর্কাইভ নিজে থেকে সরকারি কপিরাইট নিবন্ধন বা মালিকানার চূড়ান্ত প্রমাণ নয়। মূল ফাইল, কাজের খসড়া, প্রকাশের রেকর্ড ও অন্যান্য প্রমাণও আলাদাভাবে নিরাপদে রাখুন।</p></div>
   </section>
   <section id="upload" class="section">
-    <div class="section-head"><div><span class="eyebrow">ADMIN AREA</span><h2>অ্যাডমিন আপলোড প্যানেল</h2></div><span class="muted">শুধু অ্যাডমিন লগইন করে আপলোড করতে পারবেন</span></div>
+    <div class="section-head"><div><span class="eyebrow">ADMIN AREA</span><h2>অ্যাডমিন আপলোড প্যানেল</h2></div><span class="muted">শুধু অনুমোদিত অ্যাডমিন লগইন করে আপলোড করতে পারবেন</span></div>
     <div class="panel">
-      <p id="configNotice" class="notice">Supabase সংযোগের সেটিংস যোগ করার অপেক্ষায় আছে।</p>
+      <p id="configNotice" class="notice" role="status">Supabase সংযোগ পরীক্ষা হচ্ছে...</p>
       <div id="authBox" hidden>
         <form id="loginForm" class="form">
           <label>অ্যাডমিন ইমেইল<input id="email" type="email" autocomplete="username" required></label>
@@ -56,21 +57,22 @@
           <label>বিবরণ<textarea id="description" rows="3" maxlength="1000"></textarea></label>
           <label>স্রষ্টা / স্বত্বাধিকারীর নাম<input id="creator" maxlength="120" required></label>
           <label>প্রথম প্রকাশের তারিখ<input id="publishedAt" type="date"></label>
-          <label>মূল পোস্টের লিংক (ঐচ্ছিক)<input id="sourceUrl" type="url" placeholder="https://..."></label>
+          <label>মূল পোস্টের লিংক (ঐচ্ছিক)<input id="sourceUrl" type="url" inputmode="url" placeholder="https://..."></label>
           <label>ছবি অথবা ভিডিও নির্বাচন করুন<input id="mediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" required></label>
           <p class="small">প্রতি ফাইল সর্বোচ্চ ৫০ MB। SHA-256 হ্যাশ স্বয়ংক্রিয়ভাবে তৈরি হবে।</p>
           <button class="button" type="submit">আপলোড করুন</button>
-          <p id="uploadMessage" class="small" role="status"></p>
+          <p id="uploadMessage" class="small" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
   </section>
   <section id="about" class="section about">
     <span class="eyebrow">ABOUT</span><h2>আমাদের সম্পর্কে</h2>
-    <p>OriginalVault হলো আপনার নিজস্ব ভিডিও ও ছবির তথ্য, প্রকাশের তারিখ এবং মালিকানার রেকর্ড গুছিয়ে রাখার একটি ডিজিটাল আর্কাইভ।</p>
+    <p>Original Vault হলো আপনার নিজস্ব ভিডিও ও ছবির তথ্য, প্রকাশের তারিখ এবং সংশ্লিষ্ট রেকর্ড গুছিয়ে রাখার একটি ডিজিটাল আর্কাইভ।</p>
   </section>
 </main>
-<footer><div class="wrap foot"><span>© <span id="year"></span> OriginalVault</span><span>সর্বস্বত্ব সংরক্ষিত</span></div></footer>
+<footer><div class="wrap foot"><span>© <span id="year"></span> Original Vault</span><span>সর্বস্বত্ব সংরক্ষিত</span></div></footer>
 <script src="config.js"></script>
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>
