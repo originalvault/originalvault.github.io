@@ -85,18 +85,22 @@
     }
   }
 
-  let authRequest = Promise.resolve();
+  function applyAuthSession(session) {
+    $("uploadForm").hidden = !session;
+    $("logoutBtn").hidden = !session;
+    $("loginForm").querySelectorAll('label,button[type="submit"]').forEach(el => { el.hidden = !!session; });
+    setText("authMessage", session ? "অ্যাডমিন হিসেবে লগইন করা হয়েছে।" : "");
+  }
+
   async function refreshAuth() {
-    authRequest = authRequest.then(async () => {
+    try {
       const { data, error } = await db.auth.getSession();
-      if (error) console.error("Session check failed:", error);
-      const session = data?.session || null;
-      $("uploadForm").hidden = !session;
-      $("logoutBtn").hidden = !session;
-      $("loginForm").querySelectorAll('label,button[type="submit"]').forEach(el => { el.hidden = !!session; });
-      setText("authMessage", session ? "অ্যাডমিন হিসেবে লগইন করা হয়েছে।" : "");
-    }).catch(error => console.error("Auth state refresh failed:", error));
-    return authRequest;
+      if (error) throw error;
+      applyAuthSession(data?.session || null);
+    } catch (error) {
+      console.error("Auth state refresh failed:", error);
+      setText("authMessage", "লগইন অবস্থা যাচাই করা যায়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।");
+    }
   }
 
   $("loginForm").addEventListener("submit", async event => {
@@ -211,7 +215,7 @@
     }
   });
 
-  db.auth.onAuthStateChange(() => { void refreshAuth(); });
+  db.auth.onAuthStateChange((_event, session) => { queueMicrotask(() => applyAuthSession(session || null)); });
   void refreshAuth();
   void loadGallery();
 })();
