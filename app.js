@@ -59,10 +59,10 @@
       : `<img loading="lazy" decoding="async" src="${esc(mediaUrl)}" alt="${esc(item.title)}">`;
     const sourceUrl = safeSourceUrl(item.source_url);
     const source = sourceUrl
-      ? `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${esc(sourceUrl)}">মূল পোস্ট দেখুন</a></p><p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(sourceUrl)}">মূল পোস্টের লিংক কপি করুন</button></p>`
+      ? `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${esc(sourceUrl)}">মূল পোস্ট দেখুন</a></p>`
       : "";
     const detailUrl = new URL(`content.html?id=${encodeURIComponent(item.id)}`, window.location.href).href;
-    const copyArchive = `<p><a class="button secondary" href="content.html?id=${encodeURIComponent(item.id)}">কনটেন্টের বিস্তারিত দেখুন</a></p><p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(detailUrl)}">কনটেন্টের বিস্তারিত লিংক কপি করুন</button></p><p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(mediaUrl)}">শুধু ছবি/ভিডিওর লিংক কপি করুন</button></p>`;
+    const copyArchive = `<p><a class="button secondary" href="content.html?id=${encodeURIComponent(item.id)}">কনটেন্টের বিস্তারিত দেখুন</a></p><p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(detailUrl)}">কপিরাইট রিপোর্টের জন্য লিংক কপি করুন</button></p>`;
     return `<article class="card media-card">${media}<span class="tag">${isVideo ? "ভিডিও" : "ছবি"}</span><h3>${esc(item.title)}</h3><p>${esc(item.description || "")}</p><div class="meta">স্রষ্টা: ${esc(item.creator || "—")} · প্রথম প্রকাশ: ${esc(item.published_at || "তারিখ দেওয়া হয়নি")}</div>${source}${copyArchive}<details class="hash-details"><summary>ফাইল SHA-256</summary><code>${esc(item.sha256 || "সংরক্ষিত নেই")}</code></details></article>`;
   }
 
