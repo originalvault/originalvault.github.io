@@ -11,7 +11,7 @@
   const db = window.supabase.createClient(cfg.url, cfg.anonKey);
   const formatPublicationDate = value => {
     if (!value) return "Date not provided";
-    const match = String(value).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);
+    const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
     if (!match) return String(value);
     const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
     return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(date);
