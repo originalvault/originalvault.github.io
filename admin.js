@@ -32,17 +32,18 @@ $("adminUpload").addEventListener("submit",async e=>{
  const title=$("mediaTitle").value.trim(),creator=$("mediaCreator").value.trim(),source=$("mediaSource").value.trim();
  if(!title||!creator|| (source&&!safeSource(source))){say("uploadMessage","শিরোনাম, স্রষ্টার নাম এবং সঠিক লিংক পরীক্ষা করুন।");return;}
  const b=$("adminUpload").querySelector("button");b.disabled=true;say("uploadMessage","ফাইল যাচাই ও আপলোড হচ্ছে...");
- let path=null;
+ let path=null,uploadedToStorage=false;
  try{
   const {data:{user},error:userErr}=await db.auth.getUser();if(userErr||!user)throw new Error("সেশন শেষ হয়েছে। আবার লগইন করুন।");
   const hash=await digest(file),name=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-100)||"media-file";
   path=user.id+"/"+Date.now()+"-"+name;
   const {error:upErr}=await db.storage.from("originalvault-media").upload(path,file,{upsert:false,contentType:file.type,cacheControl:"3600"});if(upErr)throw upErr;
+  uploadedToStorage=true;
   const {data:{publicUrl}}=db.storage.from("originalvault-media").getPublicUrl(path);
   const {error:dbErr}=await db.from("media_records").insert({title,description:$("mediaDescription").value.trim()||null,creator,published_at:$("mediaPublished").value||null,source_url:source||null,file_path:path,public_url:publicUrl,media_type:file.type.startsWith("video/")?"video":"image",sha256:hash,owner_id:user.id});
   if(dbErr)throw dbErr;
   say("uploadMessage","সফলভাবে আপলোড হয়েছে। SHA-256: "+hash);$("adminUpload").reset();await loadRecords();
- }catch(err){console.error("Upload failed",err);say("uploadMessage",path?"ফাইল Storage-এ উঠেছে, কিন্তু ডেটাবেসে রেকর্ড হয়নি। পুনরায় আপলোড করবেন না; সহায়তা প্রয়োজন।":(err.message||"আপলোড ব্যর্থ হয়েছে।"));}finally{b.disabled=false;}
+ }catch(err){console.error("Upload failed",err);say("uploadMessage",uploadedToStorage?"ফাইল Storage-এ উঠেছে, কিন্তু ডেটাবেসে রেকর্ড হয়নি: "+(err.message||"অজানা ডেটাবেস ত্রুটি")+"। একই ফাইল আবার আপলোড করবেন না।":(err.message||"আপলোড ব্যর্থ হয়েছে।"));}finally{b.disabled=false;}
 });
 async function loadRecords(){
  const box=$("adminRecords");box.textContent="তথ্য লোড হচ্ছে...";
