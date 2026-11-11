@@ -5,7 +5,7 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const id = new URLSearchParams(location.search).get("id");
   document.getElementById("year").textContent = new Date().getFullYear();
-  if (!id || !/^[0-9a-f-]{20,}$/i.test(id)) { root.textContent = "সঠিক কনটেন্ট আইডি পাওয়া যায়নি।"; return; }
+  if (!id || !id.trim()) { root.textContent = "সঠিক কনটেন্ট আইডি পাওয়া যায়নি।"; return; }
   if (!window.supabase || !cfg.url || !cfg.anonKey) { root.textContent = "আর্কাইভে সংযোগ করা যায়নি।"; return; }
   const db = window.supabase.createClient(cfg.url, cfg.anonKey);
   const safeMedia = value => {
