@@ -3,7 +3,8 @@
   const root = document.getElementById("record");
   const cfg = window.OV_CONFIG || {};
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const id = new URLSearchParams(location.search).get("id");
+  const rawId = new URLSearchParams(location.search).get("id");
+  const id = rawId && /^\\d+$/.test(rawId) ? Number(rawId) : rawId;
   document.getElementById("year").textContent = new Date().getFullYear();
   if (!id || !id.trim()) { root.textContent = "সঠিক কনটেন্ট আইডি পাওয়া যায়নি।"; return; }
   if (!window.supabase || !cfg.url || !cfg.anonKey) { root.textContent = "আর্কাইভে সংযোগ করা যায়নি।"; return; }
@@ -13,7 +14,8 @@
     catch (_) { return ""; }
   };
   db.from("media_records").select("id,title,description,creator,published_at,source_url,public_url,media_type,sha256").eq("id",id).maybeSingle().then(({data,error}) => {
-    if (error || !data) { root.textContent = "এই কনটেন্টের তথ্য পাওয়া যায়নি।"; return; }
+    if (error) { console.error("Content record lookup failed:", error); root.textContent = "কনটেন্টের তথ্য লোড করা যায়নি। ডেটাবেসের অনুমতি বা আইডি যাচাই প্রয়োজন।"; return; }
+    if (!data) { root.textContent = "এই আইডির কোনো কনটেন্ট পাওয়া যায়নি।"; return; }
     const mediaUrl = safeMedia(data.public_url);
     const isVideo = data.media_type === "video";
     const media = mediaUrl ? (isVideo ? `<video controls preload="metadata" src="${esc(mediaUrl)}" style="width:100%;max-height:70vh"></video>` : `<img src="${esc(mediaUrl)}" alt="${esc(data.title)}" style="width:100%;height:auto;border-radius:12px">`) : "";
