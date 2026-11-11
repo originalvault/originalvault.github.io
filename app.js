@@ -70,8 +70,8 @@
     if (videoGrid) videoGrid.textContent = "ভিডিওর আর্কাইভ লোড হচ্ছে...";
     try {
       const { data, error } = await db.from("media_records")
-        .select("id,title,description,creator,published_at,source_url,public_url,media_type,sha256,created_at")
-        .order("created_at", { ascending: false });
+        .select("id,title,description,creator,published_at,source_url,public_url,media_type,sha256")
+        .order("published_at", { ascending: false, nullsFirst: false });
       if (error) throw error;
       const records = Array.isArray(data) ? data : [];
       const photos = records.filter(x => x.media_type === "image").map(mediaCard).filter(Boolean);
