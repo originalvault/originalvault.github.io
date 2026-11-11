@@ -46,9 +46,9 @@ $("adminUpload").addEventListener("submit",async e=>{
 });
 async function loadRecords(){
  const box=$("adminRecords");box.textContent="তথ্য লোড হচ্ছে...";
- try{const {data,error}=await db.from("media_records").select("id,title,creator,media_type,created_at,sha256").order("created_at",{ascending:false}).limit(100);if(error)throw error;
+ try{const {data,error}=await db.from("media_records").select("id,title,creator,media_type,published_at,sha256").order("published_at",{ascending:false,nullsFirst:false}).limit(100);if(error)throw error;
  if(!data?.length){box.textContent="এখনো কোনো কনটেন্ট সংরক্ষণ করা হয়নি।";return;}
- box.innerHTML=data.map(x=>'<article class="admin-record"><div><b>'+escapeHtml(x.title)+'</b><p class="small">'+escapeHtml(x.creator||"")+' · '+(x.media_type==="video"?"ভিডিও":"ছবি")+' · '+escapeHtml(x.created_at?new Date(x.created_at).toLocaleString("bn-BD"):"")+'</p><code>'+escapeHtml(x.sha256||"")+'</code></div></article>').join("");
+ box.innerHTML=data.map(x=>'<article class="admin-record"><div><b>'+escapeHtml(x.title)+'</b><p class="small">'+escapeHtml(x.creator||"")+' · '+(x.media_type==="video"?"ভিডিও":"ছবি")+' · '+escapeHtml(x.published_at?(()=>{const [y,m,d]=x.published_at.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("bn-BD")})():"তারিখ নেই")+'</p><code>'+escapeHtml(x.sha256||"")+'</code></div></article>').join("");
  }catch(err){console.error("Record list error",err);box.textContent="তালিকা লোড করা যায়নি। Supabase RLS policy ও media_records টেবিল পরীক্ষা প্রয়োজন।";}
 }
 db.auth.onAuthStateChange(()=>{setTimeout(()=>{void refresh();},0);});void refresh();
