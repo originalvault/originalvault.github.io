@@ -59,9 +59,35 @@
       : `<img loading="lazy" decoding="async" src="${esc(mediaUrl)}" alt="${esc(item.title)}">`;
     const sourceUrl = safeSourceUrl(item.source_url);
     const source = sourceUrl
-      ? `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${esc(sourceUrl)}">মূল পোস্ট দেখুন</a></p>` : "";
-    return `<article class="card media-card">${media}<span class="tag">${isVideo ? "ভিডিও" : "ছবি"}</span><h3>${esc(item.title)}</h3><p>${esc(item.description || "")}</p><div class="meta">স্রষ্টা: ${esc(item.creator || "—")} · প্রথম প্রকাশ: ${esc(item.published_at || "তারিখ দেওয়া হয়নি")}</div>${source}<details class="hash-details"><summary>ফাইল SHA-256</summary><code>${esc(item.sha256 || "সংরক্ষিত নেই")}</code></details></article>`;
+      ? `<p><a target="_blank" rel="noopener noreferrer nofollow" href="${esc(sourceUrl)}">মূল পোস্ট দেখুন</a></p><p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(sourceUrl)}">মূল পোস্টের লিংক কপি করুন</button></p>`
+      : "";
+    const copyArchive = `<p><button type="button" class="button secondary copy-link-btn" data-copy-url="${esc(mediaUrl)}">আর্কাইভ ফাইলের লিংক কপি করুন</button></p>`;
+    return `<article class="card media-card">${media}<span class="tag">${isVideo ? "ভিডিও" : "ছবি"}</span><h3>${esc(item.title)}</h3><p>${esc(item.description || "")}</p><div class="meta">স্রষ্টা: ${esc(item.creator || "—")} · প্রথম প্রকাশ: ${esc(item.published_at || "তারিখ দেওয়া হয়নি")}</div>${source}${copyArchive}<details class="hash-details"><summary>ফাইল SHA-256</summary><code>${esc(item.sha256 || "সংরক্ষিত নেই")}</code></details></article>`;
   }
+
+  document.addEventListener("click", async event => {
+    const button = event.target.closest(".copy-link-btn");
+    if (!button) return;
+    const url = button.getAttribute("data-copy-url");
+    if (!url) return;
+    const originalText = button.textContent;
+    try {
+      await navigator.clipboard.writeText(url);
+      button.textContent = "লিংক কপি হয়েছে ✓";
+    } catch (_) {
+      const field = document.createElement("textarea");
+      field.value = url;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      button.textContent = copied ? "লিংক কপি হয়েছে ✓" : "লিংক কপি হয়নি";
+    }
+    window.setTimeout(() => { button.textContent = originalText; }, 2200);
+  });
 
   async function loadGallery() {
     const photoGrid = $("photoGrid");
