@@ -27,7 +27,7 @@
     const isVideo = data.media_type === "video";
     const media = mediaUrl ? (isVideo ? `<video controls preload="metadata" src="${esc(mediaUrl)}" style="width:100%;max-height:70vh"></video>` : `<img src="${esc(mediaUrl)}" alt="${esc(data.title)}" style="width:100%;height:auto;border-radius:12px">`) : "";
     let source = "";
-    try { const u = new URL(data.source_url); if (["http:","https:"].includes(u.protocol)) source = `<p><a href="${esc(u.href)}" target="_blank" rel="noopener noreferrer">View Original Post</a></p>`; } catch (_) {}
+    try { const u = new URL(data.source_url); if (["http:","https:"].includes(u.protocol)) source = `<p><a href="${esc(u.href)}" target="_blank" rel="noopener noreferrer">Original Facebook Post URL</a></p>`; } catch (_) {}
     root.innerHTML = `${media}<span class="tag">${isVideo ? "Video" : "Image"}</span><h2>${esc(data.title)}</h2><p>${esc(data.description || "No description provided")}</p><p><strong>Creator / Copyright Owner:</strong> ${esc(data.creator || "—")}</p><p><strong>Original Publication Date:</strong> ${esc(formatPublicationDate(data.published_at))}</p>${source}<p><strong>SHA-256:</strong></p><code style="overflow-wrap:anywhere">${esc(data.sha256 || "Not available")}</code><p><a class="button secondary" href="index.html">Back to Original Vault Archive</a></p>`;
     document.title = (data.title || "Content Details") + " | Original Vault";
   }).catch(() => { root.textContent = "Unable to load details. Please try again later."; });
