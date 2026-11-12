@@ -42,6 +42,12 @@
 
     <div class="admin-section-title"><div><span class="admin-kicker">MEDIA MANAGEMENT</span><h2>কনটেন্ট পরিচালনা</h2><p>নতুন মিডিয়া যোগ করুন এবং সংরক্ষিত রেকর্ড দেখুন।</p></div><span class="admin-section-badge">ADMIN ONLY</span></div>
 
+    <section class="admin-card manual-views-card">
+      <div class="admin-card-heading"><span class="admin-card-icon">◉</span><div><h2>প্রদর্শিত ভিউ সংখ্যা</h2><p>ওয়েবসাইটের হোমপেজে দেখানোর সংখ্যা নিজে নির্ধারণ করুন।</p></div></div>
+      <form id="manualViewsForm" class="manual-views-form"><label>মোট ভিউ সংখ্যা<input id="manualViewsInput" type="number" min="0" max="9007199254740991" step="1" inputmode="numeric" required></label><button class="button admin-primary" type="submit">ভিউ সংখ্যা আপডেট করুন</button><p id="manualViewsMessage" class="small" role="status"></p></form>
+      <p class="manual-views-note">এটি ম্যানুয়ালি নির্ধারিত প্রদর্শিত সংখ্যা—স্বয়ংক্রিয় বা যাচাইকৃত ভিজিটর অ্যানালিটিক্স নয়।</p>
+    </section>
+
     <div class="admin-content-grid">
       <section class="admin-card upload-card">
         <div class="admin-card-heading"><span class="admin-card-icon upload-icon">＋</span><div><h2>নতুন কনটেন্ট আপলোড</h2><p>ছবি বা ভিডিওর তথ্য পূরণ করুন।</p></div></div>
