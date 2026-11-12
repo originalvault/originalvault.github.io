@@ -14,7 +14,7 @@ async function refresh(){
  const session=data.session;
  $("adminLogin").hidden=!!session;$("adminWorkspace").hidden=!session;
  say("adminStatus",session?"আপনি অ্যাডমিন হিসেবে লগইন করেছেন।":"অ্যাডমিন ইমেইল ও পাসওয়ার্ড দিয়ে লগইন করুন।");
- if(session){const {data:{user}}=await db.auth.getUser();say("signedInAs",user?.email||"");await loadRecords();}
+ if(session){const {data:{user}}=await db.auth.getUser();say("signedInAs",user?.email||"");await loadRecords();await loadManualViews();}
 }
 $("adminLogin").addEventListener("submit",async e=>{
  e.preventDefault();const b=$("adminLogin").querySelector("button");b.disabled=true;say("loginMessage","লগইন যাচাই হচ্ছে...");
@@ -44,6 +44,18 @@ $("adminUpload").addEventListener("submit",async e=>{
   if(dbErr)throw dbErr;
   say("uploadMessage","সফলভাবে আপলোড হয়েছে। SHA-256: "+hash);$("adminUpload").reset();await loadRecords();
  }catch(err){console.error("Upload failed",err);say("uploadMessage",uploadedToStorage?"ফাইল Storage-এ উঠেছে, কিন্তু ডেটাবেসে রেকর্ড হয়নি: "+(err.message||"অজানা ডেটাবেস ত্রুটি")+"। একই ফাইল আবার আপলোড করবেন না।":(err.message||"আপলোড ব্যর্থ হয়েছে।"));}finally{b.disabled=false;}
+});
+async function loadManualViews(){
+ try{const {data,error}=await db.from("site_settings").select("manual_view_count").eq("id",1).maybeSingle();if(error)throw error;const n=Number(data?.manual_view_count??0);$("manualViewsInput").value=Number.isSafeInteger(n)&&n>=0?n:0;say("manualViewsMessage","বর্তমান প্রদর্শিত সংখ্যা: "+$("manualViewsInput").value);}
+ catch(err){console.error("Manual views read failed",err);say("manualViewsMessage","ভিউ কাউন্টার টেবিল পাওয়া যায়নি। supabase/manual-view-counter.sql ফাইলের SQL একবার Supabase SQL Editor-এ চালান।");}
+}
+$("manualViewsForm").addEventListener("submit",async e=>{
+ e.preventDefault();const raw=$("manualViewsInput").value.trim(),n=Number(raw),b=$("manualViewsForm").querySelector("button");
+ if(!/^\\d+$/.test(raw)||!Number.isSafeInteger(n)||n<0){say("manualViewsMessage","০ বা তার বেশি একটি পূর্ণসংখ্যা লিখুন।");return;}
+ b.disabled=true;say("manualViewsMessage","সংখ্যা সংরক্ষণ হচ্ছে...");
+ try{const {error}=await db.from("site_settings").upsert({id:1,manual_view_count:n},{onConflict:"id"});if(error)throw error;say("manualViewsMessage","সফলভাবে আপডেট হয়েছে। হোমপেজে নতুন সংখ্যা দেখা যাবে।");}
+ catch(err){console.error("Manual views save failed",err);say("manualViewsMessage","সংরক্ষণ হয়নি। Supabase SQL migration ও RLS policy পরীক্ষা করুন।");}
+ finally{b.disabled=false;}
 });
 async function loadRecords(){
  const box=$("adminRecords");box.textContent="তথ্য লোড হচ্ছে...";
