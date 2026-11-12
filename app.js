@@ -90,6 +90,20 @@
     window.setTimeout(() => { button.textContent = originalText; }, 2200);
   });
 
+  async function loadManualViewCount() {
+    const el = $("manualViewCount");
+    if (!el) return;
+    try {
+      const { data, error } = await db.from("site_settings").select("manual_view_count").eq("id", 1).maybeSingle();
+      if (error) throw error;
+      const count = Number(data?.manual_view_count ?? 0);
+      el.textContent = Number.isSafeInteger(count) && count >= 0 ? count.toLocaleString("en-US") : "—";
+    } catch (error) {
+      console.error("Manual view count load failed:", error);
+      el.textContent = "—";
+    }
+  }
+
   async function loadGallery() {
     const photoGrid = $("photoGrid");
     const videoGrid = $("videoGrid");
@@ -245,4 +259,5 @@
   db.auth.onAuthStateChange((_event, session) => { queueMicrotask(() => applyAuthSession(session || null)); });
   void refreshAuth();
   void loadGallery();
+  void loadManualViewCount();
 })();
