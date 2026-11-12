@@ -51,7 +51,7 @@ async function loadManualViews(){
 }
 $("manualViewsForm").addEventListener("submit",async e=>{
  e.preventDefault();const raw=$("manualViewsInput").value.trim(),n=Number(raw),b=$("manualViewsForm").querySelector("button");
- if(!/^\\d+$/.test(raw)||!Number.isSafeInteger(n)||n<0){say("manualViewsMessage","০ বা তার বেশি একটি পূর্ণসংখ্যা লিখুন।");return;}
+ if(!/^\d+$/.test(raw)||!Number.isSafeInteger(n)||n<0){say("manualViewsMessage","০ বা তার বেশি একটি পূর্ণসংখ্যা লিখুন।");return;}
  b.disabled=true;say("manualViewsMessage","সংখ্যা সংরক্ষণ হচ্ছে...");
  try{const {error}=await db.from("site_settings").upsert({id:1,manual_view_count:n},{onConflict:"id"});if(error)throw error;say("manualViewsMessage","সফলভাবে আপডেট হয়েছে। হোমপেজে নতুন সংখ্যা দেখা যাবে।");}
  catch(err){console.error("Manual views save failed",err);say("manualViewsMessage","সংরক্ষণ হয়নি। Supabase SQL migration ও RLS policy পরীক্ষা করুন।");}
