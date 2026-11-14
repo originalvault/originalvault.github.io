@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Original Vault-এর ফ্রি PDF Editor — PDF দেখুন, নির্বাচিত লেখা ঢেকে নতুন লেখা বসান এবং PDF ডাউনলোড করুন।">
+<title>Free PDF Editor | Original Vault</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.pdf-wrap{width:min(1200px,calc(100% - 28px));margin:auto;padding:28px 0 60px}
+.pdf-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.pdf-head h1{font-size:clamp(27px,4vw,38px);margin:5px 0;color:#17243b}
+.pdf-head p{margin:0;color:#718096;font-size:13px}
+.pdf-back{color:#155eef;text-decoration:none;font-size:13px}
+.pdf-panel{background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:17px;margin-bottom:16px;box-shadow:0 5px 20px #15223808}
+.pdf-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.pdf-tools label{display:grid;gap:5px;font-size:12px;color:#526176}
+.pdf-tools input,.pdf-tools select{max-width:100%;border:1px solid #d7deea;border-radius:8px;padding:9px;font:inherit;background:#fff}
+.pdf-tools input[type=color]{height:39px;width:55px;padding:3px}
+.pdf-tools input[type=number]{width:78px}
+.pdf-btn{border:0;border-radius:8px;background:#155eef;color:#fff;padding:10px 14px;font:600 13px 'Hind Siliguri',sans-serif;cursor:pointer}
+.pdf-btn.secondary{background:#eaf1ff;color:#1554c8}.pdf-btn:disabled{opacity:.5;cursor:wait}
+.pdf-status{font-size:12px;color:#64748b;margin:12px 0 0;overflow-wrap:anywhere}
+.pdf-warning{background:#fff8e8;border:1px solid #f3dfad;color:#805b13;padding:12px 14px;border-radius:10px;font-size:12px;line-height:1.7;margin-bottom:16px}
+.pdf-workspace{background:#e9eef6;border:1px solid #dce3ed;border-radius:14px;padding:18px;min-height:300px;overflow:auto}
+.pdf-page{position:relative;margin:0 auto 18px;background:white;box-shadow:0 4px 18px #17243b22;width:max-content;max-width:100%}
+.pdf-page canvas{display:block;max-width:100%;height:auto}
+.pdf-text-layer{position:absolute;inset:0;overflow:hidden;line-height:1;user-select:text;-webkit-user-select:text}
+.pdf-text-layer span{position:absolute;white-space:pre;color:transparent;transform-origin:0 0;cursor:text}
+.pdf-text-layer span::selection{background:#3b82f688;color:transparent}
+.pdf-empty{color:#718096;text-align:center;padding:65px 15px;font-size:14px}
+.pdf-legend{font-size:11px;color:#718096;margin-top:10px}
+@media(max-width:600px){.pdf-head{align-items:flex-start;flex-direction:column}.pdf-panel{padding:13px}.pdf-workspace{padding:8px}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="index.html"><span class="brand-mark">মি</span><span><b>Original Vault</b><small>ORIGINAL CONTENT ARCHIVE</small></span></a>
+<nav><a href="index.html">মূল ওয়েবসাইট</a><a href="index.html#news">ছবি</a><a href="index.html#archive">কপিরাইট আর্কাইভ</a></nav>
+</div></header>
+<main class="pdf-wrap">
+<div class="pdf-head"><div><span class="eyebrow">FREE PDF TOOLKIT</span><h1>Advanced PDF Editor</h1><p>ব্রাউজারেই PDF খুলুন, লেখা সংশোধনের মতো করে নতুন লেখা বসান এবং ডাউনলোড করুন।</p></div><a class="pdf-back" href="index.html">← Original Vault-এ ফিরে যান</a></div>
+<div class="pdf-warning"><b>গুরুত্বপূর্ণ সীমাবদ্ধতা:</b> সম্পূর্ণ ফ্রি ওপেন-সোর্স ব্রাউজার লাইব্রেরি দিয়ে PDF-এর ভেতরের আসল text object নির্ভুলভাবে প্রতিস্থাপন করা সব ফাইলে সম্ভব নয়। এই সংস্করণে নির্বাচিত লেখার জায়গা সাদা করে নতুন লেখা বসানো হয় (overlay); মূল PDF-এর বাকি অংশ অক্ষত থাকে। ফন্ট/অবস্থান কাছাকাছি রাখা হয়, তবে প্রতিটি PDF-এ হুবহু মিলের নিশ্চয়তা নেই।</div>
+<section class="pdf-panel">
+<div class="pdf-tools">
+<label>PDF ফাইল নির্বাচন<input id="pdfFile" type="file" accept="application/pdf"></label>
+<label>পৃষ্ঠা<input id="pageNumber" type="number" min="1" value="1" disabled></label>
+<button id="prevPage" class="pdf-btn secondary" disabled>আগের পৃষ্ঠা</button><button id="nextPage" class="pdf-btn secondary" disabled>পরের পৃষ্ঠা</button>
+<button id="downloadPdf" class="pdf-btn" disabled>এডিট করা PDF ডাউনলোড</button>
+</div><p id="pdfStatus" class="pdf-status" role="status">প্রথমে একটি PDF ফাইল নির্বাচন করুন। ফাইল আপনার ব্রাউজারেই প্রসেস হবে; সার্ভারে আপলোড করা হয় না।</p>
+</section>
+<section class="pdf-panel">
+<div class="pdf-tools">
+<label>নতুন লেখার ফন্ট<select id="fontChoice"><option value="Helvetica">Helvetica</option><option value="TimesRoman">Times New Roman (সদৃশ)</option><option value="Courier">Courier</option></select></label>
+<label>ফন্ট সাইজ<input id="fontSize" type="number" min="5" max="96" value="12"></label>
+<label>লেখার রং<input id="fontColor" type="color" value="#222222"></label>
+<label>নিজের TTF/OTF ফন্ট<input id="customFont" type="file" accept=".ttf,.otf,font/ttf,font/otf"></label>
+<button id="replaceText" class="pdf-btn" disabled>নির্বাচিত লেখা বদলান</button>
+</div>
+<label style="display:block;margin-top:12px;font-size:12px;color:#526176">নতুন লেখা<textarea id="replacementText" rows="2" style="display:block;width:100%;margin-top:5px;border:1px solid #d7deea;border-radius:8px;padding:10px;font:inherit" placeholder="নির্বাচিত লেখার জায়গায় যে লেখা বসাতে চান..."></textarea></label>
+<p class="pdf-legend">PDF-এর লেখার ওপর মাউস/আঙুল দিয়ে টেনে সিলেক্ট করুন, নতুন লেখা লিখুন, তারপর “নির্বাচিত লেখা বদলান” চাপুন। কাস্টম ফন্ট TTF/OTF সমর্থিত; বাংলা লেখার জন্য বাংলা glyph-সহ ফন্ট ব্যবহার করুন।</p>
+</section>
+<section id="pdfWorkspace" class="pdf-workspace"><div class="pdf-empty">আপনার PDF পৃষ্ঠা এখানে দেখা যাবে।</div></section>
+</main>
+<footer><div class="wrap foot"><span>© <span id="year"></span> Original Vault</span><span>ফ্রি PDF টুল</span></div></footer>
+<script src="pdf-editor.js"></script>
+</body></html>
