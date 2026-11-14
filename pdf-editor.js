@@ -28,7 +28,7 @@ async function renderPage(n){
  workspace.replaceChildren(wrapper);
  await page.render({canvasContext:ctx,viewport}).promise;
  const content=await page.getTextContent();
- layer.addEventListener("click",e=>{const target=e.target.closest("span");if(!target)return;const range=document.createRange();range.selectNodeContents(target);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);say("লেখাটি সিলেক্ট হয়েছে। এখন নতুন লেখা লিখে “নির্বাচিত লেখা বদলান” চাপুন।");});
+ layer.addEventListener("click",e=>{const target=e.target.closest("span");if(!target)return;const range=document.createRange();range.selectNodeContents(target);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);const editor=$("replacementText");editor.focus({preventScroll:true});say("লেখাটি সিলেক্ট হয়েছে। নতুন লেখা লেখার জন্য কিবোর্ড খুলুন; প্রয়োজনে নিচের নতুন লেখা বক্সে ট্যাপ করুন।");});
  for(const item of content.items){
   if(!item.str||!item.transform)continue;
   const tx=pdfjsLib.Util.transform(viewport.transform,item.transform),fontHeight=Math.hypot(tx[2],tx[3]);
