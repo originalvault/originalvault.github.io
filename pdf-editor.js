@@ -28,7 +28,7 @@ async function renderPage(n){
  workspace.replaceChildren(wrapper);
  await page.render({canvasContext:ctx,viewport}).promise;
  const content=await page.getTextContent();
- layer.addEventListener("click",e=>{const target=e.target.closest("span");if(!target)return;const range=document.createRange();range.selectNodeContents(target);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);const editor=$("replacementText");editor.focus({preventScroll:true});say("লেখাটি সিলেক্ট হয়েছে। নতুন লেখা লেখার জন্য কিবোর্ড খুলুন; প্রয়োজনে নিচের নতুন লেখা বক্সে ট্যাপ করুন।");});
+ layer.addEventListener("click",e=>{const target=e.target.closest("span");if(!target)return;const range=document.createRange();range.selectNodeContents(target);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);setTimeout(showSelectionPaste,50);const editor=$("replacementText");editor.focus({preventScroll:true});say("লেখাটি সিলেক্ট হয়েছে। নিচে Paste বাটন দেখুন।");});
  for(const item of content.items){
   if(!item.str||!item.transform)continue;
   const tx=pdfjsLib.Util.transform(viewport.transform,item.transform),fontHeight=Math.hypot(tx[2],tx[3]);
@@ -47,11 +47,12 @@ function showSelectionPaste(){
  const range=sel.getRangeAt(0),node=range.commonAncestorContainer;
  const layer=(node.nodeType===1?node:node.parentElement)?.closest(".pdf-text-layer");
  if(!layer)return;
- const r=range.getBoundingClientRect();
  selectionMenu.style.display="block";
- const menuW=100,menuH=44;
- selectionMenu.style.left=Math.max(8,Math.min(window.innerWidth-menuW-8,r.left))+"px";
- selectionMenu.style.top=Math.max(8,Math.min(window.innerHeight-menuH-8,r.bottom+6)) +"px";
+ selectionMenu.style.left="50%";
+ selectionMenu.style.top="auto";
+ selectionMenu.style.bottom="18px";
+ selectionMenu.style.transform="translateX(-50%)";
+ selectionMenu.style.position="fixed";
 }
 document.addEventListener("selectionchange",()=>setTimeout(showSelectionPaste,80));
 document.addEventListener("scroll",()=>{selectionMenu.style.display="none";},true);
