@@ -66,8 +66,24 @@
 <section id="pdfWorkspace" class="pdf-workspace"><div class="pdf-empty">আপনার PDF পৃষ্ঠা এখানে দেখা যাবে।</div></section>
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> Original Vault</span><span>ফ্রি PDF টুল</span></div></footer>
+<div id="mobileInputModal" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,.72);padding:18px;align-items:center;justify-content:center;">
+ <div style="background:#fff;width:100%;max-width:520px;border-radius:14px;padding:18px;box-shadow:0 10px 40px #0005">
+  <h2 style="margin:0 0 12px;font-size:20px;color:#17243b">নতুন লেখা লিখুন</h2>
+  <textarea id="mobileTextEntry" rows="4" inputmode="text" autocomplete="off" autocapitalize="sentences" style="display:block;width:100%;min-height:110px;padding:14px;border:2px solid #155eef;border-radius:9px;font-size:18px;background:#fff;color:#111;touch-action:manipulation" placeholder="এখানে নতুন লেখা লিখুন..."></textarea>
+  <div style="display:flex;gap:10px;margin-top:14px"><button id="applyMobileText" type="button" class="pdf-btn">লেখা বসান</button><button id="closeMobileText" type="button" class="pdf-btn secondary">বন্ধ করুন</button></div>
+ </div>
+</div>
 <script>
-document.getElementById("openTextInput").addEventListener("click",function(){const box=document.getElementById("replacementText");const value=window.prompt("PDF-এ বসানোর জন্য নতুন লেখা লিখুন:",box.value);if(value!==null){box.value=value;box.dispatchEvent(new Event("input",{bubbles:true}));}});
+(function(){
+ const modal=document.getElementById("mobileInputModal"),entry=document.getElementById("mobileTextEntry"),box=document.getElementById("replacementText");
+ document.getElementById("openTextInput").addEventListener("click",function(){
+  modal.style.display="flex";entry.value=box.value;
+ });
+ document.getElementById("applyMobileText").addEventListener("click",function(){
+  box.value=entry.value;box.dispatchEvent(new Event("input",{bubbles:true}));modal.style.display="none";
+ });
+ document.getElementById("closeMobileText").addEventListener("click",function(){modal.style.display="none";});
+})();
 </script>
 <script src="pdf-editor.js"></script>
 </body></html>
