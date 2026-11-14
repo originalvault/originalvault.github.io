@@ -37,6 +37,37 @@ async function renderPage(n){
  $("prevPage").disabled=currentPage<=1;$("nextPage").disabled=currentPage>=totalPages;
  $("replaceText").disabled=false;say("পৃষ্ঠা "+currentPage+" / "+totalPages+" — লেখার ওপর টেনে সিলেক্ট করুন।");
 }
+
+// Show an editor-owned Paste button beside selected PDF text.
+// Android/Chrome's native selection menu itself cannot be modified by a webpage.
+const selectionMenu=$("pdfSelectionMenu"),pasteButton=$("pdfPasteButton");
+function showSelectionPaste(){
+ const sel=window.getSelection();
+ if(!sel||sel.isCollapsed||!sel.rangeCount)return;
+ const range=sel.getRangeAt(0),node=range.commonAncestorContainer;
+ const layer=(node.nodeType===1?node:node.parentElement)?.closest(".pdf-text-layer");
+ if(!layer)return;
+ const r=range.getBoundingClientRect();
+ selectionMenu.style.display="block";
+ const menuW=100,menuH=44;
+ selectionMenu.style.left=Math.max(8,Math.min(window.innerWidth-menuW-8,r.left))+"px";
+ selectionMenu.style.top=Math.max(8,Math.min(window.innerHeight-menuH-8,r.bottom+6)) +"px";
+}
+document.addEventListener("selectionchange",()=>setTimeout(showSelectionPaste,80));
+document.addEventListener("scroll",()=>{selectionMenu.style.display="none";},true);
+pasteButton.addEventListener("pointerdown",e=>e.preventDefault());
+pasteButton.addEventListener("click",async()=>{
+ try{
+  let pasted="";
+  if(navigator.clipboard&&navigator.clipboard.readText){pasted=await navigator.clipboard.readText();}
+  if(!pasted){say("ক্লিপবোর্ডে লেখা পাওয়া যায়নি। আগে লেখা Copy করুন, তারপর আবার Paste চাপুন।");return;}
+  $("replacementText").value=pasted;
+  selectionMenu.style.display="none";
+  $("replaceText").click();
+ }catch(err){
+  say("ব্রাউজার ক্লিপবোর্ড পড়ার অনুমতি দেয়নি। Chrome-এর অনুমতি দিন, তারপর Paste চাপুন।");
+ }
+});
 $("pdfFile").addEventListener("change",async e=>{
  const file=e.target.files?.[0];if(!file)return;
  if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){say("অনুগ্রহ করে PDF ফাইল নির্বাচন করুন।");return}
