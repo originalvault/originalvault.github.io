@@ -57,13 +57,17 @@
 <label>ফন্ট সাইজ<input id="fontSize" type="number" min="5" max="96" value="12"></label>
 <label>লেখার রং<input id="fontColor" type="color" value="#222222"></label>
 <label>নিজের TTF/OTF ফন্ট<input id="customFont" type="file" accept=".ttf,.otf,font/ttf,font/otf"></label>
+<button id="openTextInput" class="pdf-btn secondary" type="button">মোবাইলে লেখা লিখুন</button>
 <button id="replaceText" class="pdf-btn" disabled>নির্বাচিত লেখা বদলান</button>
 </div>
 <label style="display:block;margin-top:12px;font-size:12px;color:#526176">নতুন লেখা<textarea id="replacementText" rows="2" style="display:block;width:100%;margin-top:5px;border:1px solid #d7deea;border-radius:8px;padding:10px;font:inherit" placeholder="নির্বাচিত লেখার জায়গায় যে লেখা বসাতে চান..."></textarea></label>
-<p class="pdf-legend">মোবাইলে PDF-এর যে লেখাটি বদলাতে চান, সেটির ওপর একবার ট্যাপ করুন (লেখাটি সিলেক্ট হবে); কম্পিউটারে টেনে সিলেক্ট করুন। এরপর নতুন লেখা লিখে “নির্বাচিত লেখা বদলান” চাপুন। কাস্টম ফন্ট TTF/OTF সমর্থিত; বাংলা লেখার জন্য বাংলা glyph-সহ ফন্ট ব্যবহার করুন।</p>
+<p class="pdf-legend">মোবাইলে কিবোর্ড না এলে “মোবাইলে লেখা লিখুন” বাটনে চাপুন—লেখা লেখার আলাদা ইনপুট খুলবে। PDF-এর যে লেখাটি বদলাতে চান, সেটির ওপর একবার ট্যাপ করুন (লেখাটি সিলেক্ট হবে); কম্পিউটারে টেনে সিলেক্ট করুন। এরপর নতুন লেখা লিখে “নির্বাচিত লেখা বদলান” চাপুন। কাস্টম ফন্ট TTF/OTF সমর্থিত; বাংলা লেখার জন্য বাংলা glyph-সহ ফন্ট ব্যবহার করুন।</p>
 </section>
 <section id="pdfWorkspace" class="pdf-workspace"><div class="pdf-empty">আপনার PDF পৃষ্ঠা এখানে দেখা যাবে।</div></section>
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> Original Vault</span><span>ফ্রি PDF টুল</span></div></footer>
+<script>
+document.getElementById("openTextInput").addEventListener("click",function(){const box=document.getElementById("replacementText");const value=window.prompt("PDF-এ বসানোর জন্য নতুন লেখা লিখুন:",box.value);if(value!==null){box.value=value;box.dispatchEvent(new Event("input",{bubbles:true}));}});
+</script>
 <script src="pdf-editor.js"></script>
 </body></html>
