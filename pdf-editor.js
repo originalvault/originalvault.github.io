@@ -15,18 +15,13 @@ function measureSelection(range){
  if(!rects.length)return null;
  const bounds=rects.reduce((a,r)=>({left:Math.min(a.left,r.left),top:Math.min(a.top,r.top),right:Math.max(a.right,r.right),bottom:Math.max(a.bottom,r.bottom)}),{left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity});
  const canvas=pageEl.querySelector("canvas"),box=canvas.getBoundingClientRect();
- return selectedArea || {page:Number(pageEl.dataset.page),left:bounds.left-box.left,top:bounds.top-box.top,right:bounds.right-box.left,bottom:bounds.bottom-box.top,width:bounds.right-bounds.left,height:bounds.bottom-bounds.top,canvasWidth:box.width,canvasHeight:box.height};
+ return {page:Number(pageEl.dataset.page),left:bounds.left-box.left,top:bounds.top-box.top,right:bounds.right-box.left,bottom:bounds.bottom-box.top,width:bounds.right-bounds.left,height:bounds.bottom-bounds.top,canvasWidth:box.width,canvasHeight:box.height};
 }
 function selectedRect(){
- const sel=window.getSelection(); if(!sel||sel.isCollapsed||!sel.rangeCount)return null;
- const range=sel.getRangeAt(0),node=range.commonAncestorContainer;
- const pageEl=(node.nodeType===1?node:node.parentElement)?.closest(".pdf-page");
- if(!pageEl)return null;
- const rects=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0);
- if(!rects.length)return null;
- const bounds=rects.reduce((a,r)=>({left:Math.min(a.left,r.left),top:Math.min(a.top,r.top),right:Math.max(a.right,r.right),bottom:Math.max(a.bottom,r.bottom)}),{left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity});
- const canvas=pageEl.querySelector("canvas"),box=canvas.getBoundingClientRect();
- return {page:Number(pageEl.dataset.page),left:bounds.left-box.left,top:bounds.top-box.top,right:bounds.right-box.left,bottom:bounds.bottom-box.top,width:bounds.right-bounds.left,height:bounds.bottom-bounds.top,canvasWidth:box.width,canvasHeight:box.height};
+ if(selectedArea)return selectedArea;
+ const sel=window.getSelection();
+ if(!sel||sel.isCollapsed||!sel.rangeCount)return null;
+ return measureSelection(sel.getRangeAt(0));
 }
 async function renderPage(n){
  if(!pdfJsDoc)return;
