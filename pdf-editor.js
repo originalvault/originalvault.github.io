@@ -16,7 +16,7 @@ function selectedRect(){
  if(!rects.length)return null;
  const bounds=rects.reduce((a,r)=>({left:Math.min(a.left,r.left),top:Math.min(a.top,r.top),right:Math.max(a.right,r.right),bottom:Math.max(a.bottom,r.bottom)}),{left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity});
  const canvas=pageEl.querySelector("canvas"),box=canvas.getBoundingClientRect();
- return {page:Number(pageEl.dataset.page),left:bounds.left-box.left,top:bounds.top-box.top,right:bounds.right-box.left,bottom:bounds.bottom-box.top,width:box.width,height:box.height};
+ return {page:Number(pageEl.dataset.page),left:bounds.left-box.left,top:bounds.top-box.top,right:bounds.right-box.left,bottom:bounds.bottom-box.top,width:bounds.right-bounds.left,height:bounds.bottom-bounds.top,canvasWidth:box.width,canvasHeight:box.height};
 }
 async function renderPage(n){
  if(!pdfJsDoc)return;
@@ -91,7 +91,7 @@ $("replaceText").addEventListener("click",async()=>{
   if(!rect){say("প্রথমে PDF-এর লেখার অংশ সিলেক্ট করুন।");return}
   if(!text.trim()){say("নতুন লেখা লিখুন।");return}
   const page=pdfDoc.getPage(rect.page-1),{width:pw,height:ph}=page.getSize();
-  const sx=pw/rect.width,sy=ph/rect.height;
+  const sx=pw/rect.canvasWidth,sy=ph/rect.canvasHeight;
   const x=rect.left*sx,y=ph-rect.bottom*sy,w=rect.width*sx,h=rect.height*sy;
   let font;
   if(customFontBytes){
